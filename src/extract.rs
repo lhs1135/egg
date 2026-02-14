@@ -287,7 +287,7 @@ where
         let (cost, node) = eclass
             .iter()
             .map(|n| (self.node_total_cost(n), n))
-            .min_by(|a, b| cmp(&a.0, &b.0))
+            .max_by(|a, b| cmp(&a.0, &b.0))
             .unwrap_or_else(|| panic!("Can't extract, eclass is empty: {:#?}", eclass));
         cost.map(|c| (c, node.clone()))
     }
