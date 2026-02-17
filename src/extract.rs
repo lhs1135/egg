@@ -258,6 +258,7 @@ where
 
             for class in self.egraph.classes() {
                 let pass = self.make_pass(class);
+                println!("max_function_test");
                 match (self.costs.get(&class.id), pass) {
                     (None, Some(new)) => {
                         self.costs.insert(class.id, new);
