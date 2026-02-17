@@ -223,6 +223,7 @@ where
     /// Find the cheapest (lowest cost) represented `RecExpr` in the
     /// given eclass.
     pub fn find_best(&self, eclass: Id) -> (CF::Cost, RecExpr<L>) {
+        eprintln!("Finding best for eclass {}", eclass);
         let (cost, root) = self.costs[&self.egraph.find(eclass)].clone();
         let expr = root.build_recexpr(|id| self.find_best_node(id).clone());
         (cost, expr)
@@ -230,6 +231,11 @@ where
 
     /// Find the cheapest e-node in the given e-class.
     pub fn find_best_node(&self, eclass: Id) -> &L {
+        &self.costs[&self.egraph.find(eclass)].1
+    }
+
+    /// Find the cheapest e-node in the given e-class.
+    pub fn find_worst_node(&self, eclass: Id) -> &L {
         &self.costs[&self.egraph.find(eclass)].1
     }
 
