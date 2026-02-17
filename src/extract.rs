@@ -296,7 +296,7 @@ where
             .map(|n| (self.node_total_cost(n), n))
             .max_by(|a, b| cmp(&a.0, &b.0))
             .unwrap_or_else(|| panic!("Can't extract, eclass is empty: {:#?}", eclass));
-        eprintln!("cost_pass {} {}", node, cost);
+        eprintln!("cost_pass {:#?} {:#?}", node, cost);
         cost.map(|c| (c, node.clone()))
     }
 }
