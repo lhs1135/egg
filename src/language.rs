@@ -197,7 +197,7 @@ pub trait Language: Debug + Clone + Eq + Ord + Hash {
 
             let node = get_node(id)?;
 
-            #[cfg(debug_assertions)] {
+            /* #[cfg(debug_assertions)] {
                 if node.children().is_empty() {
                     // Leaf node (Constant or Symbol): Display trait gives us the value
                     eprintln!("{:?}", node);
@@ -208,7 +208,7 @@ pub trait Language: Debug + Clone + Eq + Ord + Hash {
                     // enode's Display only prints the operator (e.g. "+", "<<", "~")
                     eprintln!("({:?} {:?})", node, child_strs.join(" "));
                 }
-            }
+            } */
 
             // check to see if we can do this node yet
             let mut ids_has_all_children = true;
