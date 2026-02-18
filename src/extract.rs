@@ -223,8 +223,9 @@ where
     /// Find the cheapest (lowest cost) represented `RecExpr` in the
     /// given eclass.
     pub fn find_best(&self, eclass: Id) -> (CF::Cost, RecExpr<L>) {
-        eprintln!("Finding best for eclass {}", eclass);
-        eprintln!("corrseponding node {}", &self.egraph.find(eclass));
+        #[cfg(debug_assertions)] {
+            eprintln!("Finding best for eclass {:#?}", &self.egraph.find(eclass));
+        }
         let (cost, root) = self.costs[&self.egraph.find(eclass)].clone();
         let expr = root.build_recexpr(|id| self.find_best_node(id).clone());
         (cost, expr)
@@ -294,9 +295,19 @@ where
         let (cost, node) = eclass
             .iter()
             .map(|n| (self.node_total_cost(n), n))
-            .max_by(|a, b| cmp(&a.0, &b.0))
+            .max_by(|a, b| match (&a.0, &b.0) {
+                (Some(_), None) => Ordering::Greater,
+                (None, Some(_)) => Ordering::Less,
+                (None, None) => Ordering::Equal,
+                (Some(x), Some(y)) => x.partial_cmp(y)
+                    .expect("Costs should be comparable"),
+            })
             .unwrap_or_else(|| panic!("Can't extract, eclass is empty: {:#?}", eclass));
-        eprintln!("cost_pass {:#?} {:#?}", node, cost);
+
+        #[cfg(debug_assertions)] {
+            eprintln!("cost_pass: {:?} {:?}", node, cost);
+        }
+
         cost.map(|c| (c, node.clone()))
     }
 }
