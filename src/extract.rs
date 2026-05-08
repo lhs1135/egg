@@ -266,7 +266,7 @@ where
                         self.costs.insert(class.id, new);
                         did_something = true;
                     }
-                    (Some(old), Some(new)) if new.0 < old.0 => {
+                    (Some(old), Some(new)) if new.0 > old.0 => {
                         self.costs.insert(class.id, new);
                         did_something = true;
                     }
